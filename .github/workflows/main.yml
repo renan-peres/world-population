@@ -27,6 +27,7 @@ jobs:
         R -e 'install.packages("cowplot")'
         R -e 'install.packages("plotly")'
         R -e 'install.packages("crosstalk")'
+        R -e 'install.packages("DT")'
 
     # Run Script
     - name: Scrape World Pop
