@@ -3,10 +3,10 @@ name: world-pop-scraping
 
 # Control when the action will run
 on:
-  push:
-    branches: master
   schedule:
     - cron: '*/10 * * * *'
+  push:
+    branches: main
 jobs:
   render:
     runs-on: macos-latest
