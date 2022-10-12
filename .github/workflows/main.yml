@@ -20,6 +20,7 @@ jobs:
       run: |
         R -e 'install.packages("tidyverse")'
         R -e 'install.packages("rmarkdown")'
+        R -e 'install.packages("pandoc")'
         R -e 'install.packages("janitor")'
         R -e 'install.packages("rvest")'
 
