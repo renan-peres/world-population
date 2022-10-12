@@ -5,8 +5,8 @@ name: world-pop-scraping
 on:
   schedule:
     - cron: '*/10 * * * *'
-  push:
-    branches: main
+#  push:
+#    branches: main
     
 # Setup Job Environment
 jobs:
