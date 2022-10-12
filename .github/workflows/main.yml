@@ -7,6 +7,8 @@ on:
     - cron: '*/10 * * * *'
   push:
     branches: main
+    
+# Setup Job Environment
 jobs:
   render:
     runs-on: macos-latest
