@@ -36,5 +36,6 @@ jobs:
       run: |
         git config --local user.name renan-peres
         git config --local user.email "renanmogo@protonmail.com"
-        git commit -a
+        git commit index.html -m 'Re-build index.html'
+        git push origin
     
