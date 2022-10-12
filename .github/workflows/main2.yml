@@ -1,0 +1,41 @@
+# Minute Scaraping
+name: world-pop-scraping
+
+# Control when the action will run
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+    
+# Setup Job Environment
+jobs:
+  render:
+    runs-on: macos-latest
+    # Load Repo & install R
+    steps:
+    - uses: actions/checkout@v2
+    - uses: r-lib/actions/setup-r@v1
+    - uses: r-lib/actions/setup-pandoc@v1
+
+    # Set-up R
+    - name: Install Packages
+      run: |
+        R -e 'install.packages("tidyverse")'
+        R -e 'install.packages("rmarkdown")'
+        R -e 'install.packages("pandoc")'
+        R -e 'install.packages("janitor")'
+        R -e 'install.packages("rvest")'
+        R -e 'install.packages("cowplot")'
+        R -e 'install.packages("plotly")'
+        R -e 'install.packages("crosstalk")'
+        R -e 'install.packages("DT")'
+
+    # Run Script
+    - name: Scrape World Pop
+      run: Rscript -e 'rmarkdown::render(input = "index.Rmd", output_format = "html_document")'
+    - name: Commit results
+      run: |
+        git config --local user.name renan-peres
+        git config --local user.email "renanmogo@protonmail.com"
+        git commit index.html -m 'Re-build index.html'
+        git push origin
+    
