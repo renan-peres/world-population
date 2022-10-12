@@ -1,7 +1,7 @@
 ---
 title: "World Population"
 output: html_document
-date: "`r lubridate::now()`"
+date: "`r lubridate::now('US/Eastern')`"
 ---
 
 ```{r setup, include=FALSE}
