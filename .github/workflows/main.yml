@@ -36,5 +36,5 @@ jobs:
       run: |
         git config --local user.name renan-peres
         git config --local user.email "renanmogo@protonmail.com"
-        git commit git commit -a
+        git commit git commit -A
     
