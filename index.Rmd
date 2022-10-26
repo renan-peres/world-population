@@ -78,7 +78,7 @@ df_1 %>% mutate_at(.vars = c(2:4), .funs = ~scales::comma(.)) %>% DT::datatable(
 # Plotly
   plotly::ggplotly(p1, tooltip = c("x", "y")) -> p1_plotly
   plotly::ggplotly(p2,tooltip = c("x","text")) -> p2_plotly
-  crosstalk::bscols(widths = c(12, 12, 12), p1_plotly, p2_plotly, p2_plotly) -> world_pop
+  crosstalk::bscols(widths = c(12, 12), p1_plotly, p2_plotly) -> world_pop
   
 world_pop
 ```
