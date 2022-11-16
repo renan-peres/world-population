@@ -12,7 +12,6 @@ library(tidyverse)
 library(rvest)
 library(janitor)
 library(scales)
-# Test
 content <- rvest::read_html("https://www.worldometers.info/world-population/world-population-by-year/")
 world_pop <- content %>% html_table(fill = T,header = T) %>% pluck(1)
 
