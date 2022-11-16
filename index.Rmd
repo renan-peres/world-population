@@ -1,0 +1,98 @@
+---
+title: "World Population"
+output: 
+  html_document:
+    code_folding: hide
+date: "`r lubridate::now('US/Eastern')`"
+
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(rvest)
+library(janitor)
+library(scales)
+
+content <- rvest::read_html("https://www.worldometers.info/world-population/world-population-by-year/")
+world_pop <- content %>% html_table(fill = T,header = T) %>% pluck(1)
+
+```
+
+This data was retrieved from [**Worldometers**](https://www.worldometers.info/world-population/world-population-by-year/)
+
+
+```{r, include=TRUE}
+world_pop %>% 
+  janitor::clean_names() %>% 
+  mutate_all(~str_remove_all(., pattern = "%|[:space:]")) %>% 
+  mutate_all(~parse_guess(.)) %>%
+  mutate(year = paste0(year, "-01-01"),
+         year = as.Date(year)) %>% 
+  drop_na() %>% 
+  rename(date = year, pop = 2, percent_change = 3, density = 5, yearly_change = 4) -> df
+
+ggplot2::theme_set(cowplot::theme_cowplot(font_size = 18))
+df %>% 
+  arrange(date) %>%
+  mutate(rank = dense_rank(yearly_change)) %>% 
+  arrange(desc(rank)) %>% 
+  arrange(date) %>% 
+  mutate_at(.vars = c(2:4), as.double) -> df_1
+
+df_1 %>%
+  select(1:4) %>% 
+  mutate_at(.vars = c(2,4), scales::comma) %>% 
+  mutate(date = format(x = date, "%Y"),
+         percent_change = percent_change/100,
+         percent_change = scales::percent(percent_change, accuracy = 0.01)) %>%
+  rename(Year = date, 'World Population' = pop, 'Percentage Change' = percent_change, 'Yearly Change' = yearly_change) %>% 
+  DT::datatable(rownames = F)
+```
+
+
+## Plots
+
+```{r, include=TRUE, warning=FALSE}
+ # Plot 1 -> Percentage Increase
+  p1 <- df_1 %>% 
+  ggplot(aes(x = date, y = percent_change, fill = percent_change)) +
+  geom_bar(stat = "identity", color = "black", show.legend = F)+
+  scale_x_date(date_breaks = "10 years", 
+               date_labels = "%Y",
+               limits = c(as.Date("1950-01-01"), as.Date("2020-01-01")), 
+               expand = c(0,1)) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  labs(x = "", y = "") +
+  ggtitle("World Yearly Growth") +
+  scale_fill_viridis_c(direction = -1) +
+  theme(plot.title = element_text(face = "bold", family = "mono", size = 28, color = "#1e0628", hjust = .5), 
+        panel.grid.major.y = element_line(colour = "black"))
+  
+# Plot 2 -> Population Increase
+  p2 <- df_1 %>% 
+  ggplot(aes(x = date, y = pop, fill = pop, 
+             text = paste0("Pop: ", scales::comma(pop, accuracy = 1)))) +
+  geom_bar(stat = "identity", color = "black", show.legend = F) +
+  scale_x_date(date_breaks = "10 years", 
+               date_labels = "%Y",
+               limits = c(as.Date("1950-01-01"), as.Date("2020-01-01")), 
+               expand = c(0,1)) +
+  scale_y_continuous(labels = scales::number_format(scale = .000000001, suffix = " B")) +
+  labs(x = "", y = "") +
+  ggtitle("World Population") +
+  scale_fill_viridis_c(option = "inferno", direction = -1) +
+  theme(plot.title = element_text(face = "bold", family = "mono", size = 28, color = "#1e0628", hjust = .5), 
+        panel.grid.major.y = element_line(colour = "black"))
+
+# Plotly
+  plotly::ggplotly(p1, tooltip = c("x", "y")) -> p1_plotly
+  plotly::ggplotly(p2,tooltip = c("x","text")) -> p2_plotly
+  crosstalk::bscols(widths = c(12, 12), p1_plotly, p2_plotly) -> world_pop
+  
+world_pop
+```
+
+
+
+
+
