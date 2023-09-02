@@ -4,7 +4,7 @@ name: world-pop-scraping
 # Control when the action will run 
 on:
   schedule:
-    - cron: @hourly
+    - cron: '0 * * * *'
   push:
     branches: main
     
