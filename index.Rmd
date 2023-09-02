@@ -3,7 +3,7 @@ title: "World Population"
 output: 
   html_document:
     code_folding: hide
-date: "`r lubridate::now('US/Eastern') %>% as_date()`"
+date: "`r lubridate::now('US/Eastern') |> as_date()`"
 
 ---
 
