@@ -33,7 +33,7 @@ jobs:
 
     # Run Script
     - name: Scrape World Pop
-      run: Rscript -e 'rmarkdown::render(input = "index.Rmd", output_format = "html_document")'
+      run: Rscript -e 'rmarkdown::render(input = "index.qmd", output_format = "html_document")'
     - name: Commit results
       run: |
         git config --local user.name renan-peres
