@@ -10,8 +10,11 @@ on:
     
 # Setup Job Environment
 jobs:
-  render:
+  build-deploy:
     runs-on: macos-latest
+    permissions:
+      contents: write
+      
     # Load Repo & install R
     steps:
     - uses: actions/checkout@v4
@@ -49,7 +52,7 @@ jobs:
     - name: Render and Publish
       uses: quarto-dev/quarto-actions/publish@v2
       with:
-        target: world-pop
+        target: index.qmd
     
     - name: Commit results
       run: |
