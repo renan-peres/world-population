@@ -1,10 +1,10 @@
 ---
 title: "World Population"
-output: 
-  html_document:
-    code_folding: hide
-date: "`r lubridate::now('US/Eastern') |> as_date()`"
-
+format: 
+  html:
+    page-layout: full
+    code-fold: true
+date: "`r lubridate::now('US/Eastern') |> lubridate::as_date()`"
 ---
 
 ```{r setup, include=FALSE}
