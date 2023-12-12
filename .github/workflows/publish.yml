@@ -22,10 +22,24 @@ jobs:
         with:
           r-version: '4.3.1'
 
-      - name: Install R Dependencies
-        uses: r-lib/actions/setup-renv@v2
-        with:
-          cache-version: 1
+  # Install Packages Manually
+      - name: Install Packages
+        run: |
+          R -e 'install.packages("tidyverse")'
+          R -e 'install.packages("rmarkdown")'
+          R -e 'install.packages("pandoc")'
+          R -e 'install.packages("janitor")'
+          R -e 'install.packages("rvest")'
+          R -e 'install.packages("cowplot")'
+          R -e 'install.packages("plotly")'
+          R -e 'install.packages("crosstalk")'
+          R -e 'install.packages("DT")'
+          
+  # Install Packages from Renv
+      # - name: Install R Dependencies
+      #   uses: r-lib/actions/setup-renv@v2
+      #   with:
+      #     cache-version: 1
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
