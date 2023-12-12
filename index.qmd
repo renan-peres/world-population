@@ -4,6 +4,7 @@ format:
   html:
     page-layout: full
     code-fold: true
+    embed-resources: true
 date: "`r lubridate::now('US/Eastern') |> lubridate::as_date()`"
 ---
 
