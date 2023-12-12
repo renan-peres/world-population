@@ -5,3 +5,5 @@
 *.Rproj
 /index_files/**
 .Rproj.user
+/.quarto/
+/_site/
