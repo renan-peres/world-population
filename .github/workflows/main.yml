@@ -54,11 +54,10 @@ jobs:
       with:
         to: html
     
-    - name: Publish HTML book
+    - name: Publish HTML File
         uses: quarto-dev/quarto-actions/publish@v2
       with:
         target: gh-pages
-      env: 
     
     - name: Commit results
       run: |
