@@ -14,8 +14,10 @@ library(rvest)
 library(janitor)
 library(scales)
 content <- rvest::read_html("https://www.worldometers.info/world-population/world-population-by-year/")
-world_pop <- content %>% html_table(fill = T,header = T) %>% pluck(1)
+country_content <- rvest::read_html("https://www.worldometers.info/world-population/population-by-country/")
 
+world_pop <- content %>% html_table(fill = T,header = T) %>% pluck(1)
+country_pop <- country_content %>% html_table(fill = T,header = T) %>% pluck(1)
 ```
 
 This data was retrieved from [**Worldometers**](https://www.worldometers.info/world-population/world-population-by-year/)
@@ -49,6 +51,21 @@ df_1 %>%
   DT::datatable(rownames = F)
 ```
 
+```{r, include=TRUE}
+country_pop %>% 
+  janitor::clean_names() %>% 
+  mutate_all(~str_remove_all(., pattern = "%|[:space:]")) %>% 
+  mutate_all(~parse_guess(.)) %>%
+  drop_na() %>%
+  rename(Rank = number, Country = 2, Population = 3, density = 5, yearly_change = 4) %>% 
+  select(1:4) %>% 
+  mutate_at(.vars = c(3), scales::comma) %>% 
+  mutate(yearly_change = paste0(yearly_change, "%")) %>%
+  rename('Yearly Change' = yearly_change) %>% 
+  DT::datatable(rownames = F,
+                editable = T,
+                style = "bootstrap5")
+```
 
 ## Plots
 
@@ -59,7 +76,7 @@ df_1 %>%
   geom_bar(stat = "identity", color = "black", show.legend = F)+
   scale_x_date(date_breaks = "10 years", 
                date_labels = "%Y",
-               limits = c(as.Date("1950-01-01"), as.Date("2020-01-01")), 
+               limits = c(as.Date("1950-01-01"), as.Date("2024-01-01")), 
                expand = c(0,1)) +
   scale_y_continuous(labels = scales::percent_format(scale = 1)) +
   labs(x = "", y = "") +
@@ -75,7 +92,7 @@ df_1 %>%
   geom_bar(stat = "identity", color = "black", show.legend = F) +
   scale_x_date(date_breaks = "10 years", 
                date_labels = "%Y",
-               limits = c(as.Date("1950-01-01"), as.Date("2020-01-01")), 
+               limits = c(as.Date("1950-01-01"), as.Date("2024-01-01")), 
                expand = c(0,1)) +
   scale_y_continuous(labels = scales::number_format(scale = .000000001, suffix = " B")) +
   labs(x = "", y = "") +
