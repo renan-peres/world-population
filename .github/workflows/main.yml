@@ -49,10 +49,16 @@ jobs:
       #run: Rscript -e 'rmarkdown::render(input = "index.Rmd", output_format = "html_document")'
     
     # Quarto
-    - name: Render and Publish
-      uses: quarto-dev/quarto-actions/publish@v2
+    - name: Render World Pop
+      uses: quarto-dev/quarto-actions/render@v2
       with:
-        target: world-pop
+        to: html
+    
+    - name: Publish HTML book
+        uses: quarto-dev/quarto-actions/publish@v2
+      with:
+        target: gh-pages
+      env: 
     
     - name: Commit results
       run: |
