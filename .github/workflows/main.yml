@@ -59,10 +59,10 @@ jobs:
       with:
         target: gh-pages
     
-    - name: Commit results
-      run: |
-        git config --local user.name renan-peres
-        git config --local user.email "renanmogo@protonmail.com"
-        git commit index.html -m 'Re-build index.html'
-        git push origin
+    # - name: Commit results
+    #   run: |
+    #     git config --local user.name renan-peres
+    #     git config --local user.email "renanmogo@protonmail.com"
+    #     git commit index.html -m 'Re-build index.html'
+    #     git push origin
     
