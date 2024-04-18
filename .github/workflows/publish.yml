@@ -25,6 +25,7 @@ jobs:
   # Install Packages Manually
       - name: Install Packages
         run: |
+          R -e 'install.packages("https://github.com/jeroen/curl/archive/master.tar.gz", repos = NULL)'
           R -e 'install.packages("tidyverse")'
           R -e 'install.packages("rmarkdown")'
           R -e 'install.packages("pandoc")'
