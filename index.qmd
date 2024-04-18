@@ -20,7 +20,7 @@ world_pop <- content %>% html_table(fill = T,header = T) %>% pluck(1)
 country_pop <- country_content %>% html_table(fill = T,header = T) %>% pluck(1)
 ```
 
-This data was retrieved from [**Worldometers**](https://www.worldometers.info/world-population/world-population-by-year/)
+This data was retrieved [**Worldometers**](https://www.worldometers.info/world-population/world-population-by-year/)
 
 
 ```{r, include=TRUE}
