@@ -1,0 +1,4 @@
+Package: world-population
+Version: 0.1.0
+Authors@R: person("Your Name", "your.email@example.com", role = c("aut", "cre"))
+Description: A package for analyzing world population data
