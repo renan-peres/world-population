@@ -1,0 +1,23 @@
+on:
+  push:
+    branches: main
+  schedule:
+    - cron: 0 22 * * 0
+
+name: Main Workflow
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Package Install
+        uses: actions/workflow_dispatch@v1
+        with:
+          workflow: package-install.yml
+          ref: main
+
+      - name: Trigger Quarto Publish
+        uses: actions/workflow_dispatch@v1
+        with:
+          workflow: quarto-publish.yml
+          ref: main
