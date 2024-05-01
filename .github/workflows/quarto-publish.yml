@@ -39,6 +39,7 @@ jobs:
       - name: Install R Packages
         run: |
           R -e 'install.packages("rmarkdown")'
+          R -e 'install.packages("lubridate")'
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
