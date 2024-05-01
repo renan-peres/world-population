@@ -50,3 +50,5 @@ jobs:
           R -e 'install.packages("plotly")'
           R -e 'install.packages("crosstalk")'
           R -e 'install.packages("DT")'
+          R -e 'install.packages("rmarkdown")'
+          R -e 'install.packages("lubridate")'
