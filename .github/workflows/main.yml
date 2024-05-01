@@ -16,6 +16,12 @@ jobs:
           workflow: package-install.yml
           ref: main
 
+      - name: Wait for Package Install to complete
+        run: |
+          while [ $(github.actions/workflow/status package-install)!= "success" ]; do
+            sleep 10
+          done
+
       - name: Trigger Quarto Publish
         uses: actions/workflow_dispatch@v1
         with:
