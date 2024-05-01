@@ -23,12 +23,14 @@ jobs:
         run: echo "R_LIBS_USER=${R_LIBS_USER:-$(R RHOME)/site-library}" >> $GITHUB_ENV
 
       - name: Cache R packages
-        if: runner.os!= 'Windows'
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-4.3.3-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ runner.os }}-r-4.3.3-*
+          key: quarto-packages-${{ hashFiles('depends.Rds') }}
+          restore-keys: quarto-packages-
+
+      - name: Verify cache restoration
+        run: ls $R_LIBS_USER
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
