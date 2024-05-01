@@ -7,6 +7,7 @@ name: Quarto Publish
 
 jobs:
   build-deploy:
+    needs: install-packages
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -22,31 +23,30 @@ jobs:
         with:
           r-version: '4.3.3'
 
+      - name: Set R_LIBS_USER
+        run: echo "R_LIBS_USER=${R_LIBS_USER:-$(R RHOME)/site-library}" >> $GITHUB_ENV
+
       - name: Install Libcurl
         run: sudo apt-get install libcurl4-openssl-dev
 
       - name: Install Fribidi & HarfBuzz
         run: sudo apt-get install libharfbuzz-dev libfribidi-dev
 
-  # Install Packages Manually
-      - name: Install R Packages
-        run: |
-          R -e 'install.packages("https://github.com/jeroen/curl/archive/master.tar.gz", repos = NULL)'
-          R -e 'install.packages("tidyverse")'
-          R -e 'install.packages("rmarkdown")'
-          R -e 'install.packages("pandoc")'
-          R -e 'install.packages("janitor")'
-          R -e 'install.packages("rvest")'
-          R -e 'install.packages("cowplot")'
-          R -e 'install.packages("plotly")'
-          R -e 'install.packages("crosstalk")'
-          R -e 'install.packages("DT")'
-          
-  # Install Packages from Renv
-      # - name: Install R Dependencies
-      #   uses: r-lib/actions/setup-renv@v2
-      #   with:
-      #     cache-version: 1
+      - name: Query dependencies
+        run: Rscript -e "install.packages('remotes')" -e "saveRDS(remotes::dev_package_deps(dependencies = TRUE), 'depends.Rds')"
+
+      - name: Cache R packages
+        if: runner.os!= 'Windows'
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-4.3.3-${{ hashFiles('depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-4.3.3-*
+
+      - name: Set up renv
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
