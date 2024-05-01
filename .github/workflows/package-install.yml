@@ -23,8 +23,8 @@ jobs:
         run: echo "R_LIBS_USER=${R_LIBS_USER:-$(R RHOME)/site-library}" >> $GITHUB_ENV
 
       - name: Query dependencies
-        run: Rscript -e "install.packages('remotes')" -e "saveRDS(remotes::dev_package_deps(dependencies = TRUE), 'depends.Rds')"
-
+        run: Rscript -e "install.packages('remotes')" -e "saveRDS(remotes::getDependencies(), 'depends.Rds')"
+        
       - name: Cache R packages
         uses: actions/cache@v4
         with:
