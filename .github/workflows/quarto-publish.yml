@@ -33,24 +33,37 @@ jobs:
         run: echo "R_LIBS_USER=${R_LIBS_USER:-$(R RHOME)/site-library}" >> $GITHUB_ENV
 
       - name: Query dependencies
-        run: Rscript -e "saveRDS(tools::package_dependencies('world-population', recursive = TRUE), 'depends.Rds')"
+        run: |
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+        shell: Rscript {0}
 
       - name: Cache R packages
-        uses: actions/cache@v4
+        if: runner.os != 'Windows'
+        uses: actions/cache@v2
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ github.repository }}-quarto-packages-${{ hashFiles('depends.Rds') }}
-          restore-keys: ${{ github.repository }}-quarto-packages-
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Initialize renv
+      - name: Install system dependencies
+        if: runner.os == 'Linux'
         run: |
-          R -e 'install.packages("renv")'
-          R -e 'renv::init()'
-          R -e 'renv::restore()'
+          while read -r cmd
+          do
+            eval sudo $cmd
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
+
+      - name: Install dependencies
+        run: |
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("rcmdcheck")
+        shell: Rscript {0}
 
       - name: Install packages
         run: |
-          R -e 'renv::install("curl", "remotes", "pak", "janitor", "cowplot", "plotly", "crosstalk")'
+          R -e 'install_packages(c("curl", "remotes", "pak", "janitor", "cowplot", "plotly", "DT")'
           R -e 'pak::pak("rstudio/rmarkdown")'
           R -e 'pak::pak("tidyverse/tidyverse")'
 
