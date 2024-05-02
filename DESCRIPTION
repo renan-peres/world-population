@@ -13,7 +13,7 @@ Imports:
     filelock,
     jsonlite,
     tidyverse,
-    GT,
+    DT,
     rmarkdown
 Suggests:
     covr,
