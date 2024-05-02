@@ -39,6 +39,7 @@ jobs:
   # Install Packages Manually
       - name: Install R Packages
         run: |
+          R -e 'install.packages("remotes")'
           R -e 'pak::pak('rstudio/rmarkdown')'
           R -e 'install.packages("lubridate")'
 
