@@ -34,9 +34,9 @@ jobs:
 
       - name: Query dependencies
         run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+          R -e 'install.packages("remotes")'
+          R -e 'saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)'
+          R -e 'writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")'
         shell: Rscript {0}
 
       - name: Cache R packages
