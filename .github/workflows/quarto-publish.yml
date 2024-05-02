@@ -43,7 +43,6 @@ jobs:
         run: |
           R -e 'install.packages("https://github.com/jeroen/curl/archive/master.tar.gz", repos = NULL)'
           R -e 'install.packages("remotes"); print("Remotes installed")'
-          R -e 'install.packages("devtools")'
           R -e 'install.packages("pak"); print("Pak installed")'
           R -e 'pak::pak("rstudio/rmarkdown")'
           R -e 'pak::pak("tidyverse/tidyverse")'
