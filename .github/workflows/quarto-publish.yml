@@ -48,7 +48,9 @@ jobs:
           R -e 'install.packages("remotes"); print("Remotes installed")'
           R -e 'install.packages("pak"); print("Pak installed")'
           R -e 'pak::pak("rstudio/rmarkdown")'
-          R -e 'install.packages("lubridate")'
+          R -e 'pak::pak("tidyverse/tidyverse")'
+          # R -e 'devtools::install_github("tidyverse/lubridate")'
+          
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
