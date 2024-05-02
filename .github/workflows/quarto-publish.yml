@@ -36,6 +36,12 @@ jobs:
       - name: Verify cache restoration
         run: ls $R_LIBS_USER
 
+      - name: Install Libcurl
+        run: sudo apt-get install libcurl4-openssl-dev
+
+      - name: Install Fribidi & HarfBuzz
+        run: sudo apt-get install libharfbuzz-dev libfribidi-dev
+
   # Install Packages Manually
       - name: Install R Packages
         run: |
