@@ -1,9 +1,7 @@
 Package: world-population
 Version: 0.1.0
 Authors@R: person("Your Name", "your.email@example.com", role = c("aut", "cre"))
-Description: A package for analyzing world population data. This
-    is a utility package to be used by package management tools that want
-    to take advantage of caching.
+Description: A package for analyzing world population data.
 Depends:
     R (>= 3.4)
 Imports:
@@ -14,7 +12,13 @@ Imports:
     jsonlite,
     tidyverse,
     DT,
-    rmarkdown
+    rmarkdown,
+    remotes,
+    pak,
+    janitor,
+    cowplot,
+    plotly,
+    crosstalk
 Suggests:
     covr,
     debugme,
