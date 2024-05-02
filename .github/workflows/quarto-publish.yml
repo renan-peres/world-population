@@ -54,16 +54,22 @@ jobs:
           do
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
-      
+
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
+      - name: Initialize renv
+        run: |
+          R -e 'install.packages("renv")'
+          R -e 'renv::init()'
+          R -e 'renv::restore()'
+
       - name: Install packages
         run: |
-          R -e 'install_packages(c("curl", "remotes", "pak", "janitor", "cowplot", "plotly", "DT")'
+          R -e 'renv::install("curl", "remotes", "pak", "janitor", "cowplot", "plotly", "DT")'
           R -e 'pak::pak("rstudio/rmarkdown")'
           R -e 'pak::pak("tidyverse/tidyverse")'
 
