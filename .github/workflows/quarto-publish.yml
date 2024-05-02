@@ -32,12 +32,6 @@ jobs:
       - name: Set R_LIBS_USER
         run: echo "R_LIBS_USER=${R_LIBS_USER:-$(R RHOME)/site-library}" >> $GITHUB_ENV
 
-      - name: Initialize renv
-        run: |
-          R -e 'install.packages("renv")'
-          R -e 'renv::init()'
-          R -e 'renv::restore()'
-
       - name: Query dependencies
         run: Rscript -e "saveRDS(tools::package_dependencies('world-population', recursive = TRUE), 'depends.Rds')"
 
@@ -47,6 +41,12 @@ jobs:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ github.repository }}-quarto-packages-${{ hashFiles('depends.Rds') }}
           restore-keys: ${{ github.repository }}-quarto-packages-
+
+      - name: Initialize renv
+        run: |
+          R -e 'install.packages("renv")'
+          R -e 'renv::init()'
+          R -e 'renv::restore()'
 
       - name: Install packages
         run: |
