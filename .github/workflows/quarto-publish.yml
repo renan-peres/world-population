@@ -41,13 +41,18 @@ jobs:
       - name: Install Fribidi & HarfBuzz
         run: sudo apt-get install libharfbuzz-dev libfribidi-dev
 
-      - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/install-quarto@v2
+
+      - name: Install renv
+        run: Rscript -e "install.packages('renv')"
+
+      - name: Initialize renv
+        run: Rscript -e "renv::init()"
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
         env:
-          USER_EMAIL: ${{ secrets.USER_EMAIL }}
-          USER_NAME: ${{ secrets.USER_NAME }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
