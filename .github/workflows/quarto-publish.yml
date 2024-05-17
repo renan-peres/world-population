@@ -29,14 +29,14 @@ jobs:
 
       - name: Initialize renv
         run: R -e "renv::init()"
-
+        
       - name: Cache R Dependencies
         uses: actions/cache@v3
         id: renv-cache
         key: $GITHUB_SHA-RENv
         path: ~/.local/share/renv
-
-      - name: Restore R Dependencies
+        
+      - name: Install R Dependencies with renv
         run: R -e "renv::restore()"
 
       - name: Render and Publish
