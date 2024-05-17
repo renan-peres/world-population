@@ -42,7 +42,7 @@ jobs:
         run: sudo apt-get install libharfbuzz-dev libfribidi-dev
 
       - name: Install Quarto
-        uses: r-lib/actions/setup-quarto@v2
+        uses: quarto-dev/quarto-actions/install-quarto@v2
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
