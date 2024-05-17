@@ -41,8 +41,8 @@ jobs:
       - name: Install Fribidi & HarfBuzz
         run: sudo apt-get install libharfbuzz-dev libfribidi-dev
 
-      - name: Install Quarto
-        uses: quarto-dev/quarto-actions/install-quarto@v2
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Install renv
         run: Rscript -e "install.packages('renv')"
