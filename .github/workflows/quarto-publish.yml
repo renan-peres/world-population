@@ -45,7 +45,8 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Install renv
-        run: Rscript -e "install.packages('renv')"
+        run: |
+          R -e "install.packages('renv')"
 
       - name: Initialize renv
         run: Rscript -e "renv::init()"
